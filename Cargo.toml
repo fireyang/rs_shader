@@ -1,0 +1,8 @@
+[package]
+name = "rs_shader"
+version = "0.1.0"
+authors = ["fireyang <shenhuan007@gmail.com>"]
+
+
+[dependencies]
+glium = "*"
