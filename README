@@ -1,0 +1,4 @@
+# 试试 rust写个shader查看工具
+参考：
+. https://github.com/fungos/shader-lab-rs
+. https://github.com/fungos/shadertoy-rs
