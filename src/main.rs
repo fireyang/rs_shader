@@ -52,7 +52,8 @@ fn main() {
 
         void main() {
             // color = vec4(1.0, 0.0, 0.0, 1.0);
-            color = texture(tex, v_tex_coords);
+            vec2 f = (v_tex_coords + vec2(1.0,1.0)) / 2;
+            color = texture(tex, f);
         }
     "#;
 
@@ -61,13 +62,12 @@ fn main() {
             .unwrap();
 
 
-    println!("aaaaa");
-    let file = "textures/01-brickwall.jpg";
-    let f = Some(file);
+    // let file = "textures/01-brickwall.jpg";
+    // let f = Some(file);
+    let f = None;
     let im = load_texture(&f);
-    println!("eeeee");
     let diffuse_texture = glium::texture::SrgbTexture2d::new(&display, im).unwrap();
-    println!("bbbbb");
+
 
     let mut closed = false;
     while !closed {
@@ -110,12 +110,23 @@ extern crate image;
 
 use glium::texture::RawImage2d;
 // use glium::texture::ToClientFormat;
+pub static DEFAULT_TEXTURE0_BUF: &'static [u8] = include_bytes!("../textures/01-brickwall.jpg");
 
 fn load_texture<'a>(texpath: &'a Option<&str>) -> glium::texture::RawImage2d<'a, u8> {
     // let image = image::load(Cursor::new(&include_bytes!("../book/tuto-14-diffuse.jpg")[..]),
     // image::JPEG).unwrap().to_rgba();
-    let im = image::open(&Path::new(&texpath.clone().unwrap())).unwrap().to_rgba();
-    println!("eeeb");
+    let im = if texpath.is_some() {
+        image::open(&Path::new(&texpath.clone().unwrap()))
+            .unwrap()
+            .flipv()
+            .to_rgba()
+    } else {
+        image::load_from_memory(DEFAULT_TEXTURE0_BUF)
+            .unwrap()
+            .flipv()
+            .to_rgba()
+    };
+    // let im = image::open(&Path::new(&texpath.clone().unwrap())).unwrap().to_rgba();
     let image_dimensions = im.dimensions();
     let im = RawImage2d::from_raw_rgba_reversed(&im.into_raw(), image_dimensions);
     im

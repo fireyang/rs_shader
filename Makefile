@@ -3,7 +3,7 @@ demo1: fmt
 	cargo run --example demo1
 
 run: 
-	cargo run
+	cargo run --release
 
 install_fmt:
 	cargo install rustfmt
