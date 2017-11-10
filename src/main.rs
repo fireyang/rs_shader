@@ -14,7 +14,7 @@ struct Vertex {
 implement_vertex!(Vertex, position);
 
 const SCREEN: [Vertex; 4] = [
-    Vertex{position: [ 0.0,  1.0]}, // Top right
+    Vertex{position: [ 1.0,  1.0]}, // Top right
     Vertex{position: [-1.0,  1.0]}, // Top left
     Vertex{position: [-1.0, -1.0]}, // Bottom left
     Vertex{position: [ 1.0, -1.0]}, // Bottom right
@@ -47,8 +47,12 @@ fn main() {
 
         out vec4 color;
 
+        uniform sampler2D tex;
+        in vec2 v_tex_coords;
+
         void main() {
-            color = vec4(1.0, 0.0, 0.0, 1.0);
+            // color = vec4(1.0, 0.0, 0.0, 1.0);
+            color = texture(tex, v_tex_coords);
         }
     "#;
 
@@ -56,6 +60,14 @@ fn main() {
         glium::Program::from_source(&display, vertex_shader_src, fragment_shader_src, None)
             .unwrap();
 
+
+    println!("aaaaa");
+    let file = "textures/01-brickwall.jpg";
+    let f = Some(file);
+    let im = load_texture(&f);
+    println!("eeeee");
+    let diffuse_texture = glium::texture::SrgbTexture2d::new(&display, im).unwrap();
+    println!("bbbbb");
 
     let mut closed = false;
     while !closed {
@@ -74,11 +86,10 @@ fn main() {
                 &positions,
                 &indices,
                 &program,
-                &uniform! { matrix: matrix },
+                &uniform! { matrix: matrix , tex: &diffuse_texture},
                 &Default::default(),
             )
             .unwrap();
-
 
         target.finish().unwrap();
 
@@ -95,17 +106,17 @@ fn main() {
 }
 
 extern crate image;
-use image::GenericImage;
+// use image::GenericImage;
 
 use glium::texture::RawImage2d;
 // use glium::texture::ToClientFormat;
 
-/*
-fn load_texture<'a>(texpath: &'a Option<String>) -> glium::texture::RawImage2d<'a, T> {
+fn load_texture<'a>(texpath: &'a Option<&str>) -> glium::texture::RawImage2d<'a, u8> {
     // let image = image::load(Cursor::new(&include_bytes!("../book/tuto-14-diffuse.jpg")[..]),
     // image::JPEG).unwrap().to_rgba();
-    let im = image::open(&Path::new(&texpath.clone().unwrap())).unwrap();
+    let im = image::open(&Path::new(&texpath.clone().unwrap())).unwrap().to_rgba();
+    println!("eeeb");
     let image_dimensions = im.dimensions();
     let im = RawImage2d::from_raw_rgba_reversed(&im.into_raw(), image_dimensions);
     im
-}*/
+}
