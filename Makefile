@@ -11,3 +11,6 @@ install_fmt:
 
 fmt:
 	cargo fmt -- --write-mode=overwrite
+
+get_submodule:
+	git submodule update --init --recursive

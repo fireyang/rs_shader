@@ -4,6 +4,8 @@ version = "0.1.0"
 dependencies = [
  "glium 0.18.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "image 0.17.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "imgui 0.0.18-pre",
+ "imgui-glium-renderer 0.0.18-pre",
 ]
 
 [[package]]
@@ -332,6 +334,31 @@ dependencies = [
  "num-traits 0.1.40 (registry+https://github.com/rust-lang/crates.io-index)",
  "png 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "scoped_threadpool 0.1.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "imgui"
+version = "0.0.18-pre"
+dependencies = [
+ "imgui-sys 0.0.18-pre",
+]
+
+[[package]]
+name = "imgui-glium-renderer"
+version = "0.0.18-pre"
+dependencies = [
+ "glium 0.18.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "imgui 0.0.18-pre",
+ "imgui-sys 0.0.18-pre",
+]
+
+[[package]]
+name = "imgui-sys"
+version = "0.0.18-pre"
+dependencies = [
+ "bitflags 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "cc 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "glium 0.18.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
