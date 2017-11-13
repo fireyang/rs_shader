@@ -32,15 +32,15 @@ const SCREEN_INDICES: [u16; 6] = [0, 1, 2, 0, 2, 3];
 const PREFIX: &'static str = "
     #version 150 core
 
-    // uniform float     iGlobalTime;
+    uniform float     iGlobalTime;
     uniform float     iTime;
     uniform vec3      iResolution;
-    // uniform vec4      iMouse;
-    // uniform int       iFrame;
-    // uniform sampler2D iChannel0;
-    // uniform sampler2D iChannel1;
-    // uniform sampler2D iChannel2;
-    // uniform sampler2D iChannel3;
+    uniform vec4      iMouse;
+    uniform int       iFrame;
+    uniform sampler2D iChannel0;
+    uniform sampler2D iChannel1;
+    uniform sampler2D iChannel2;
+    uniform sampler2D iChannel3;
 
     in vec2 fragCoord;
     out vec4 fragColor;
@@ -99,9 +99,10 @@ fn main() {
     let diffuse_texture = glium::texture::SrgbTexture2d::new(&display, im).unwrap();
 
 
+
     let mut closed = false;
     let mut time: f32 = 0.0;
-    let mut start_time = Instant::now();
+    let start_time = Instant::now();
     while !closed {
         let mut target = display.draw();
         target.clear_color(0.0, 0.0, 0.0, 1.0);
