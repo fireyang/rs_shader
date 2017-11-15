@@ -20,29 +20,47 @@ pub fn hello_world<'a>(ui: &Ui<'a>) -> bool {
     true
 }
 
-/*
+use std::cell::Cell;
 
-#[derive(Debug)]
-struct UI{
-    imgui: mut ImGui;
-    render: Renderer;
+pub struct UI{
+    ui: Cell<ImGui>,
+    t: Cell<u32>,
+    // render: Renderer,
 }
 
-impl UI{
-    pub fn  new() -> UI{
-        let mut imgui = ImGui::init();
-        imgui.set_ini_filename(None);
-        configure_keys(&mut imgui);
+use glium::Display;
 
-        let mut renderer = Renderer::init(&mut imgui, &display).expect("Failed to initialize renderer");
+impl UI{
+    pub fn new() -> UI{
+        let im = ImGui::init();
         UI{
-            imgui: imgui,
-            render: renderer,
+            ui: Cell::new(im),
+            t: Cell::new(5),
         }
     }
 
-    pub fn poll_event(&self, event){
+    pub fn test(&self){
+        let a = &self.t.get();
+        // let mut c = a;
+        println!("{:?}", a);
+        // configure_keys(&mut a);
     }
+    /*
+    pub fn new(display: &Display) -> UI{
+        let mut im = ImGui::init();
+        im.set_ini_filename(None);
+        configure_keys(&mut im);
+
+        let mut renderer = Renderer::init(&mut im, display).expect("Failed to initialize renderer");
+        UI{
+            ui: &mut im,
+            render: renderer,
+        }
+    }
+    */
+
+    // pub fn poll_event(&self, event){
+    // }
 }
 
 fn configure_keys(imgui: &mut ImGui) {
@@ -68,4 +86,3 @@ fn configure_keys(imgui: &mut ImGui) {
     imgui.set_imgui_key(ImGuiKey::Y, 17);
     imgui.set_imgui_key(ImGuiKey::Z, 18);
 }
-*/

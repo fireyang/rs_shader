@@ -15,6 +15,7 @@ use std::io::prelude::*;
 use std::time::Instant;
 
 use imgui::{ImGui, Ui};
+use ui::UI;
 
 #[derive(Copy, Clone)]
 struct Vertex {
@@ -117,12 +118,14 @@ fn main() {
     let context = glutin::ContextBuilder::new();
     let display = glium::Display::new(window, context, &events_loop).unwrap();
 
+    /*
     use imgui_glium_renderer::Renderer;
     let mut imgui = ImGui::init();
     imgui.set_ini_filename(None);
     let mut renderer = Renderer::init(&mut imgui, &display).expect("Failed to initialize renderer");
 
     configure_keys(&mut imgui);
+    */
 
 
     //定义顶点
@@ -168,6 +171,7 @@ fn main() {
                 use glium::glutin::{Event, MouseButton, MouseScrollDelta, TouchPhase};
                 match event {
                     Closed => closed = true,
+                    /*
                     KeyboardInput { input, .. } => {
                         use glium::glutin::VirtualKeyCode as Key;
                         let pressed = input.state == Pressed;
@@ -198,6 +202,7 @@ fn main() {
                         ..
                     } => mouse_state.wheel = y,
                     ReceivedCharacter(c) => imgui.add_input_character(c),
+                    */
                     _ => (),
                 }
             }
@@ -205,7 +210,7 @@ fn main() {
         });
 
         //draw ui
-        update_mouse(&mut imgui, &mut mouse_state);
+        //update_mouse(&mut imgui, &mut mouse_state);
 
         let gl_window = display.gl_window();
         let size_points = gl_window.get_inner_size_points().unwrap();
@@ -216,10 +221,12 @@ fn main() {
         let delta_s = delta.as_secs() as f32 + delta.subsec_nanos() as f32 / 1_000_000_000.0;
         last_frame = now;
 
+        /*
         let ui = imgui.frame(size_points, size_pixels, delta_s);
         if !run_ui(&ui) {
             break;
         }
+        */
 
         let mut target = display.draw();
         target.clear_color(0.0, 0.0, 0.0, 0.5);
@@ -243,7 +250,7 @@ fn main() {
             .unwrap();
         let elapsed = get_tm(&start_time);
 
-        renderer.render(&mut target, ui).expect("Rendering failed");
+        //renderer.render(&mut target, ui).expect("Rendering failed");
         // println!("time: {}", elapsed);
 
         time = elapsed;
