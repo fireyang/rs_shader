@@ -81,7 +81,39 @@ struct MouseState {
 
 fn main() {
     let mut events_loop = glutin::EventsLoop::new();
+
+    // enumerating monitors
+    /*
+    let monitor = {
+        for (num, monitor) in events_loop.get_available_monitors().enumerate() {
+            println!("Monitor #{}: {:?}", num, monitor.get_name());
+        }
+
+        print!("Please write the number of the monitor to use: ");
+        io::stdout().flush().unwrap();
+
+        let mut num = String::new();
+        io::stdin().read_line(&mut num).unwrap();
+        let num = num.trim().parse().ok().expect("Please enter a number");
+        let monitor = events_loop.get_available_monitors().nth(num).expect(
+            "Please enter a valid ID",
+        );
+
+        println!("Using {:?}", monitor.get_name());
+
+        monitor
+    };
+    */
+
+    let monitor = events_loop.get_primary_monitor();
+    let (mw, mh) = monitor.get_dimensions();
+    println!("monitor size: {}, {}", mw, mh);
+
     let window = glutin::WindowBuilder::new();
+        // .with_fullscreen(Some(monitor))
+        // .with_dimensions(mw, mh)
+        // .with_decorations(false)
+        // .with_transparency(true);
     let context = glutin::ContextBuilder::new();
     let display = glium::Display::new(window, context, &events_loop).unwrap();
 
@@ -190,9 +222,8 @@ fn main() {
         }
 
         let mut target = display.draw();
-        target.clear_color(0.0, 0.0, 0.0, 1.0);
+        target.clear_color(0.0, 0.0, 0.0, 0.5);
 
-        renderer.render(&mut target, ui).expect("Rendering failed");
 
         let matrix = [
             [0.01, 0.0, 0.0, 0.0],
@@ -201,16 +232,18 @@ fn main() {
             [0.0, 0.0, 0.0, 1.0f32],
         ];
 
-        // target
-        //     .draw(
-        //         &positions,
-        //         &indices,
-        //         &program,
-        //         &uniform! { matrix: matrix , tex: &diffuse_texture, iTime: time},
-        //         &Default::default(),
-        //     )
-        //     .unwrap();
+        target
+            .draw(
+                &positions,
+                &indices,
+                &program,
+                &uniform! { matrix: matrix , tex: &diffuse_texture, iTime: time},
+                &Default::default(),
+            )
+            .unwrap();
         let elapsed = get_tm(&start_time);
+
+        renderer.render(&mut target, ui).expect("Rendering failed");
         // println!("time: {}", elapsed);
 
         time = elapsed;
